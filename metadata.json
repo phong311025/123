@@ -1,0 +1,6 @@
+{
+  "name": "CLUB WORKSPACE – Quản lý hoạt động Câu lạc bộ",
+  "description": "Hệ thống quản lý hoạt động nội bộ câu lạc bộ: BTV MC, Truyền thông và Kỹ thuật - phân công, lịch trình, tiến độ và đánh giá.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

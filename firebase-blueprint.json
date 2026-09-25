@@ -1,0 +1,257 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User account for authentication and role-based access",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email", "description": "Email address" },
+        "fullName": { "type": "string", "maxLength": 100, "description": "Full display name" },
+        "role": { "type": "string", "enum": ["super_admin", "dept_admin", "member", "viewer"], "description": "System permission role" },
+        "departmentId": { "type": "string", "description": "Subcommittee department ID if applicable" },
+        "memberId": { "type": "string", "description": "Associated member profile ID" },
+        "isActive": { "type": "boolean", "description": "Whether account is active or locked" },
+        "lastLoginAt": { "type": "string", "format": "date-time", "description": "Last login timestamp" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Update timestamp" }
+      },
+      "required": ["email", "fullName", "role", "isActive"]
+    },
+    "Member": {
+      "title": "Member",
+      "description": "Club member detailed profile across the 3 subcommittees",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string", "maxLength": 100, "description": "Full name of member" },
+        "email": { "type": "string", "format": "email", "description": "Contact email" },
+        "phone": { "type": "string", "maxLength": 20, "description": "Phone number" },
+        "dateOfBirth": { "type": "string", "description": "Date of birth" },
+        "className": { "type": "string", "maxLength": 50, "description": "University class" },
+        "major": { "type": "string", "maxLength": 100, "description": "Academic major" },
+        "course": { "type": "string", "maxLength": 20, "description": "Intake/Cohort e.g. K18, K19" },
+        "departmentId": { "type": "string", "enum": ["btv-mc", "truyen-thong", "ky-thuat"], "description": "Subcommittee department" },
+        "position": { "type": "string", "maxLength": 100, "description": "Club position (Trưởng ban, Phó ban, Thành viên)" },
+        "systemRole": { "type": "string", "enum": ["super_admin", "dept_admin", "member", "viewer"], "description": "Access role" },
+        "status": { "type": "string", "enum": ["active", "leave", "alumni"], "description": "Membership status" },
+        "notes": { "type": "string", "maxLength": 1000, "description": "Additional notes" },
+        "joinedAt": { "type": "string", "description": "Join date" },
+        "facebookUrl": { "type": "string", "maxLength": 200, "description": "Social contact URL" },
+        "completedTasksCount": { "type": "number", "description": "Total completed tasks" },
+        "overdueTasksCount": { "type": "number", "description": "Total overdue tasks" },
+        "contributionScore": { "type": "number", "description": "Calculated score" },
+        "isDeleted": { "type": "boolean", "description": "Soft deletion flag" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Update timestamp" }
+      },
+      "required": ["fullName", "email", "departmentId", "status"]
+    },
+    "NewsItem": {
+      "title": "NewsItem",
+      "description": "Weekly bulletin, news item or work assignment request",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string", "maxLength": 30, "description": "Bulletin code e.g. BT-2025-01" },
+        "title": { "type": "string", "maxLength": 200, "description": "Title or headline" },
+        "summary": { "type": "string", "maxLength": 2000, "description": "Summary or brief requirements" },
+        "receivedAt": { "type": "string", "description": "Received date" },
+        "eventDate": { "type": "string", "description": "Target event execution date" },
+        "startTime": { "type": "string", "description": "Start time" },
+        "endTime": { "type": "string", "description": "End time" },
+        "location": { "type": "string", "maxLength": 200, "description": "Event location" },
+        "organizer": { "type": "string", "maxLength": 150, "description": "Organizing entity or department" },
+        "sourceContact": { "type": "string", "maxLength": 150, "description": "Information provider contact" },
+        "priority": { "type": "string", "enum": ["low", "normal", "high", "urgent"], "description": "Priority tier" },
+        "status": { "type": "string", "enum": ["draft", "assigning", "assigned", "in_progress", "review", "completed", "cancelled"], "description": "Execution status" },
+        "leadMemberId": { "type": "string", "description": "Main supervisor or lead member" },
+        "notes": { "type": "string", "maxLength": 1000, "description": "Special instructions" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Update timestamp" }
+      },
+      "required": ["code", "title", "status", "priority"]
+    },
+    "ClubEvent": {
+      "title": "ClubEvent",
+      "description": "Scheduled club event or activity",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 200, "description": "Event title" },
+        "description": { "type": "string", "maxLength": 2000, "description": "Event description" },
+        "location": { "type": "string", "maxLength": 200, "description": "Venue" },
+        "startDate": { "type": "string", "description": "Start date or ISO timestamp" },
+        "endDate": { "type": "string", "description": "End date or ISO timestamp" },
+        "departmentId": { "type": "string", "description": "Primary coordinating department" },
+        "status": { "type": "string", "enum": ["upcoming", "ongoing", "completed", "cancelled"], "description": "Event status" },
+        "leadMemberId": { "type": "string", "description": "Event director" },
+        "relatedNewsId": { "type": "string", "description": "Associated news/bulletin item" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Update timestamp" }
+      },
+      "required": ["title", "location", "startDate", "status"]
+    },
+    "CommunicationPlan": {
+      "title": "CommunicationPlan",
+      "description": "Media and communications campaign plan for events",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 200, "description": "Plan title" },
+        "eventId": { "type": "string", "description": "Target event ID" },
+        "newsId": { "type": "string", "description": "Associated news ID" },
+        "target": { "type": "string", "maxLength": 500, "description": "Communication target" },
+        "audience": { "type": "string", "maxLength": 500, "description": "Target audience" },
+        "mainMessage": { "type": "string", "maxLength": 1000, "description": "Key campaign message" },
+        "leadMemberId": { "type": "string", "description": "Campaign director" },
+        "startDate": { "type": "string", "description": "Plan launch date" },
+        "endDate": { "type": "string", "description": "Plan wrap-up date" },
+        "status": { "type": "string", "enum": ["planning", "active", "completed", "archived"], "description": "Plan status" },
+        "budget": { "type": "number", "description": "Estimated budget" },
+        "notes": { "type": "string", "maxLength": 1000, "description": "Notes" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Update timestamp" }
+      },
+      "required": ["title", "status"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "Operational task across the 3 subcommittees",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 200, "description": "Task name" },
+        "description": { "type": "string", "maxLength": 2000, "description": "Task detailed description" },
+        "planId": { "type": "string", "description": "Associated communication plan" },
+        "eventId": { "type": "string", "description": "Associated event" },
+        "newsId": { "type": "string", "description": "Associated news bulletin" },
+        "phase": { "type": "string", "enum": ["before", "during", "after"], "description": "Execution phase" },
+        "departmentId": { "type": "string", "enum": ["btv-mc", "truyen-thong", "ky-thuat"], "description": "Responsible subcommittee" },
+        "reviewerId": { "type": "string", "description": "Approver or reviewer member ID" },
+        "priority": { "type": "string", "enum": ["low", "normal", "high", "urgent"], "description": "Priority" },
+        "status": { "type": "string", "enum": ["todo", "assigned", "in_progress", "draft_submitted", "revising", "under_review", "approved", "completed", "on_hold", "cancelled", "overdue"], "description": "Workflow status" },
+        "startDate": { "type": "string", "description": "Start date" },
+        "dueDate": { "type": "string", "description": "Due deadline" },
+        "completedAt": { "type": "string", "format": "date-time", "description": "Completion timestamp" },
+        "receivedAt": { "type": "string", "format": "date-time", "description": "Task intake timestamp" },
+        "assignedAt": { "type": "string", "format": "date-time", "description": "Assignment timestamp" },
+        "startedAt": { "type": "string", "format": "date-time", "description": "Work started timestamp" },
+        "draftSubmittedAt": { "type": "string", "format": "date-time", "description": "Draft submission timestamp" },
+        "approvedAt": { "type": "string", "format": "date-time", "description": "Review approval timestamp" },
+        "finalSubmittedAt": { "type": "string", "format": "date-time", "description": "Final product handoff timestamp" },
+        "estimatedHours": { "type": "number", "description": "Estimated work hours" },
+        "actualHours": { "type": "number", "description": "Actual recorded hours" },
+        "qualityScore": { "type": "number", "description": "Quality score rating (1-100)" },
+        "notes": { "type": "string", "maxLength": 1000, "description": "Notes" },
+        "createdBy": { "type": "string", "description": "Creator user ID" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Update timestamp" }
+      },
+      "required": ["title", "departmentId", "priority", "status"]
+    },
+    "TaskComment": {
+      "title": "TaskComment",
+      "description": "Discussion, feedback and progress notes on a task",
+      "type": "object",
+      "properties": {
+        "taskId": { "type": "string", "description": "Target task ID" },
+        "authorId": { "type": "string", "description": "Author user/member ID" },
+        "authorName": { "type": "string", "maxLength": 100, "description": "Author full name" },
+        "authorRole": { "type": "string", "maxLength": 50, "description": "Author role" },
+        "content": { "type": "string", "maxLength": 2000, "description": "Comment text" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" }
+      },
+      "required": ["taskId", "authorId", "authorName", "content"]
+    },
+    "Evaluation": {
+      "title": "Evaluation",
+      "description": "Periodic member performance and contribution evaluation",
+      "type": "object",
+      "properties": {
+        "memberId": { "type": "string", "description": "Evaluated member ID" },
+        "period": { "type": "string", "maxLength": 50, "description": "Evaluation period (e.g. 2025-W12, Tháng 3/2025)" },
+        "onTimeScore": { "type": "number", "description": "Score for punctuality" },
+        "completionScore": { "type": "number", "description": "Score for task completion" },
+        "qualityScore": { "type": "number", "description": "Score for quality" },
+        "attendanceScore": { "type": "number", "description": "Score for event attendance" },
+        "coordinationScore": { "type": "number", "description": "Score for teamwork" },
+        "initiativeScore": { "type": "number", "description": "Score for initiative" },
+        "totalScore": { "type": "number", "description": "Weighted overall score" },
+        "manualAdjustment": { "type": "number", "description": "Manual admin adjustment" },
+        "adjustmentReason": { "type": "string", "maxLength": 500, "description": "Reason for adjustment" },
+        "evaluatedBy": { "type": "string", "description": "Evaluator user ID" },
+        "evaluatedAt": { "type": "string", "format": "date-time", "description": "Evaluation timestamp" }
+      },
+      "required": ["memberId", "period", "totalScore"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "System operational audit and security trail",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Actor user ID" },
+        "userName": { "type": "string", "maxLength": 100, "description": "Actor name" },
+        "userRole": { "type": "string", "maxLength": 50, "description": "Actor role" },
+        "action": { "type": "string", "maxLength": 50, "description": "Operation action type" },
+        "entityType": { "type": "string", "maxLength": 50, "description": "Target entity" },
+        "entityId": { "type": "string", "description": "Target entity record ID" },
+        "details": { "type": "string", "maxLength": 2000, "description": "Summary of action" },
+        "timestamp": { "type": "string", "format": "date-time", "description": "Action timestamp" }
+      },
+      "required": ["userId", "userName", "action", "entityType"]
+    },
+    "SystemSetting": {
+      "title": "SystemSetting",
+      "description": "Global workspace club configuration",
+      "type": "object",
+      "properties": {
+        "clubName": { "type": "string", "maxLength": 150, "description": "Club title" },
+        "logoUrl": { "type": "string", "description": "Club brand logo URL" },
+        "brandColor": { "type": "string", "maxLength": 20, "description": "Brand hex color" },
+        "timezone": { "type": "string", "maxLength": 50, "description": "Timezone" },
+        "warningDaysBeforeDue": { "type": "number", "description": "Advance alert threshold in days" },
+        "allowConflictOverride": { "type": "boolean", "description": "Whether admins can bypass schedule conflicts" },
+        "isEvaluationEnabled": { "type": "boolean", "description": "Enable or disable evaluation scoring module" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last settings update" }
+      },
+      "required": ["clubName"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Registered user accounts with role authorization"
+    },
+    "/members/{memberId}": {
+      "schema": "Member",
+      "description": "Club member profiles and weekly study schedules"
+    },
+    "/newsItems/{newsId}": {
+      "schema": "NewsItem",
+      "description": "Weekly bulletins and task requests"
+    },
+    "/events/{eventId}": {
+      "schema": "ClubEvent",
+      "description": "Club events and activity calendar"
+    },
+    "/communicationPlans/{planId}": {
+      "schema": "CommunicationPlan",
+      "description": "Event communication and media planning campaigns"
+    },
+    "/tasks/{taskId}": {
+      "schema": "Task",
+      "description": "Granular operational tasks assigned to subcommittees and members"
+    },
+    "/tasks/{taskId}/comments/{commentId}": {
+      "schema": "TaskComment",
+      "description": "Progress comments and attachments on specific tasks"
+    },
+    "/evaluations/{evalId}": {
+      "schema": "Evaluation",
+      "description": "Performance evaluations and contribution scores"
+    },
+    "/auditLogs/{logId}": {
+      "schema": "AuditLog",
+      "description": "Immutable security and operational audit trail"
+    },
+    "/systemSettings/{settingId}": {
+      "schema": "SystemSetting",
+      "description": "Workspace system configuration and weights"
+    }
+  }
+}
